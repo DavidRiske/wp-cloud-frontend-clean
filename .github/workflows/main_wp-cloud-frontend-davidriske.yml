@@ -74,5 +74,6 @@ jobs:
         with:
           app-name: "wp-cloud-frontend-davidriske"
           slot-name: "Production"
-          package: .
+          package: ./deploy
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_383A724E5E914E569664B7FAE9229443 }}
+
