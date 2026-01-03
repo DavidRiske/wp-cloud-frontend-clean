@@ -1,3 +1,6 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy Node.js app to Azure Web App - wp-cloud-frontend-davidriske
 
 on:
@@ -29,14 +32,27 @@ jobs:
 
       - name: Prepare deployment package
         run: |
+          rm -rf deploy
           mkdir -p deploy/.next
+
+          # Standalone server (includes minimal node_modules it needs)
           cp -r .next/standalone/* deploy/
+
+          # Next build artifacts required at runtime
           cp -r .next/static deploy/.next/static
           cp -f .next/BUILD_ID deploy/.next/BUILD_ID
+
+          # Public assets
           cp -r public deploy/public
+
+          # Debug listing (helps verify artifacts are present)
+          echo "=== DEPLOY ROOT ==="
           ls -la deploy
+          echo "=== DEPLOY .next ==="
           ls -la deploy/.next
+          echo "=== DEPLOY .next/static (first entries) ==="
           ls -la deploy/.next/static | head -n 20
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -60,4 +76,3 @@ jobs:
           slot-name: "Production"
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_383A724E5E914E569664B7FAE9229443 }}
-
