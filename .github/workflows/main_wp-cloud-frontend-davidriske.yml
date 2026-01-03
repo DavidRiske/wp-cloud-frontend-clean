@@ -59,7 +59,7 @@ jobs:
           name: node-app
           path: deploy
 
-  deploy:
+    deploy:
     runs-on: ubuntu-latest
     needs: build
 
@@ -70,11 +70,23 @@ jobs:
           name: node-app
           path: deploy
 
+      - name: Zip deployment package
+        run: |
+          cd deploy
+          zip -r ../deploy.zip .
+          cd ..
+          echo "=== ZIP CREATED ==="
+          ls -la deploy.zip
+          echo "=== DEPLOY CONTENT (TOP) ==="
+          ls -la deploy | head -n 50
+          echo "=== DEPLOY .next CHECK ==="
+          ls -la deploy/.next || true
+          ls -la deploy/.next/static | head -n 20 || true
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: "wp-cloud-frontend-davidriske"
           slot-name: "Production"
-          package: ./deploy
+          package: deploy.zip
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_383A724E5E914E569664B7FAE9229443 }}
-
