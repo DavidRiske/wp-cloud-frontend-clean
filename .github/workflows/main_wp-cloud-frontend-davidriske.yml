@@ -60,7 +60,7 @@ jobs:
           path: deploy
 
     deploy:
-    runs-on: ubuntu-latest
+   
     needs: build
 
     steps:
@@ -90,3 +90,4 @@ jobs:
           slot-name: "Production"
           package: deploy.zip
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_383A724E5E914E569664B7FAE9229443 }}
+
